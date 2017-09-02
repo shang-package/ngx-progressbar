@@ -189,9 +189,9 @@ var NgProgressInterceptor = (function () {
      */
     NgProgressInterceptor.prototype.intercept = function (req, next) {
         var _this = this;
-        this.progressService.start();
+        this.progressService.begin();
         return next.handle(req).finally(function () {
-            _this.progressService.done();
+            _this.progressService.end();
         });
     };
     return NgProgressInterceptor;

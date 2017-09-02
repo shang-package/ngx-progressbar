@@ -190,9 +190,9 @@ class NgProgressInterceptor {
      * @return {?}
      */
     intercept(req, next) {
-        this.progressService.start();
+        this.progressService.begin();
         return next.handle(req).finally(() => {
-            this.progressService.done();
+            this.progressService.end();
         });
     }
 }
