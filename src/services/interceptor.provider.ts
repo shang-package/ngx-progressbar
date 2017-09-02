@@ -11,9 +11,9 @@ export class NgProgressInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.progressService.start();
+    this.progressService.begin();
     return next.handle(req).finally(() => {
-      this.progressService.done();
+      this.progressService.end();
     });
   }
 }

@@ -33,6 +33,8 @@ export class NgProgressService {
   speed = 200;
   trickleSpeed = 300;
 
+  private pendingProgress = 0;
+
   constructor() {
 
     this.trickling.switchMap(() => {
@@ -58,6 +60,25 @@ export class NgProgressService {
       this.set(.3 + .5 * Math.random());
       this.set(this.maximum);
     }
+  }
+
+  begin() {
+    this.pendingProgress++;
+    console.log('begin pendingProgress: ', this.pendingProgress);
+    this.start();
+  }
+
+  end() {
+    this.pendingProgress--;
+    console.log('end pendingProgress: ', this.pendingProgress);
+    if (this.pendingProgress <= 0) {
+      this.done();
+    }
+  }
+
+  reset() {
+    this.pendingProgress = 0;
+    this.done();
   }
 
   /** Increment Progress */
@@ -96,16 +117,20 @@ export class NgProgressService {
          *  reset progress
          *  Keep it { 0, false } to fadeOut progress-bar after complete
          */
-        this.progress = 0;
-        this.updateState(this.progress, false);
+        if (this.progress === this.maximum) {
+          this.progress = 0;
+          this.updateState(this.progress, false);
+        }
       };
       const complete = () => {
         /**
          * complete progressbar
          * { 1, false } to complete progress-bar before hiding
          */
-        this.updateState(this.progress, false);
-        setTimeout(hide, this.speed);
+        if (this.progress === this.maximum) {
+          this.updateState(this.progress, false);
+          setTimeout(hide, this.speed);
+        }
       };
       setTimeout(complete, this.speed);
     }
