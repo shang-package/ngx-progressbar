@@ -44,29 +44,6 @@ class NgProgressService {
         }).subscribe();
     }
     /**
-     * @return {?}
-     */
-    begin() {
-        this.pendingProgress++;
-        this.start();
-    }
-    /**
-     * @return {?}
-     */
-    end() {
-        this.pendingProgress--;
-        if (this.pendingProgress <= 0) {
-            this.done();
-        }
-    }
-    /**
-     * @return {?}
-     */
-    reset() {
-        this.pendingProgress = 0;
-        this.done();
-    }
-    /**
      * Start
      * @return {?}
      */
@@ -86,6 +63,31 @@ class NgProgressService {
             this.set(.3 + .5 * Math.random());
             this.set(this.maximum);
         }
+    }
+    /**
+     * @return {?}
+     */
+    begin() {
+        this.pendingProgress++;
+        console.log('begin pendingProgress: ', this.pendingProgress);
+        this.start();
+    }
+    /**
+     * @return {?}
+     */
+    end() {
+        this.pendingProgress--;
+        console.log('end pendingProgress: ', this.pendingProgress);
+        if (this.pendingProgress <= 0) {
+            this.done();
+        }
+    }
+    /**
+     * @return {?}
+     */
+    reset() {
+        this.pendingProgress = 0;
+        this.done();
     }
     /**
      * Increment Progress
@@ -135,16 +137,20 @@ class NgProgressService {
                  *  reset progress
                  *  Keep it { 0, false } to fadeOut progress-bar after complete
                  */
-                this.progress = 0;
-                this.updateState(this.progress, false);
+                if (this.progress === this.maximum) {
+                    this.progress = 0;
+                    this.updateState(this.progress, false);
+                }
             };
             const /** @type {?} */ complete = () => {
                 /**
                  * complete progressbar
                  * { 1, false } to complete progress-bar before hiding
                  */
-                this.updateState(this.progress, false);
-                setTimeout(hide, this.speed);
+                if (this.progress === this.maximum) {
+                    this.updateState(this.progress, false);
+                    setTimeout(hide, this.speed);
+                }
             };
             setTimeout(complete, this.speed);
         }

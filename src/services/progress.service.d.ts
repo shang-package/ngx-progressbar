@@ -15,13 +15,13 @@ export declare class NgProgressService {
     trickleSpeed: number;
     private pendingProgress;
     constructor();
-    begin(): void;
-    end(): void;
-    reset(): void;
     /** Start */
     start(): void;
     /** Done */
     done(): void;
+    begin(): void;
+    end(): void;
+    reset(): void;
     /** Increment Progress */
     inc(amount?: any): void;
     /** Set progress state */

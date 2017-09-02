@@ -41,29 +41,6 @@ var NgProgressService = (function () {
         }).subscribe();
     }
     /**
-     * @return {?}
-     */
-    NgProgressService.prototype.begin = function () {
-        this.pendingProgress++;
-        this.start();
-    };
-    /**
-     * @return {?}
-     */
-    NgProgressService.prototype.end = function () {
-        this.pendingProgress--;
-        if (this.pendingProgress <= 0) {
-            this.done();
-        }
-    };
-    /**
-     * @return {?}
-     */
-    NgProgressService.prototype.reset = function () {
-        this.pendingProgress = 0;
-        this.done();
-    };
-    /**
      * Start
      * @return {?}
      */
@@ -83,6 +60,31 @@ var NgProgressService = (function () {
             this.set(.3 + .5 * Math.random());
             this.set(this.maximum);
         }
+    };
+    /**
+     * @return {?}
+     */
+    NgProgressService.prototype.begin = function () {
+        this.pendingProgress++;
+        console.log('begin pendingProgress: ', this.pendingProgress);
+        this.start();
+    };
+    /**
+     * @return {?}
+     */
+    NgProgressService.prototype.end = function () {
+        this.pendingProgress--;
+        console.log('end pendingProgress: ', this.pendingProgress);
+        if (this.pendingProgress <= 0) {
+            this.done();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgProgressService.prototype.reset = function () {
+        this.pendingProgress = 0;
+        this.done();
     };
     /**
      * Increment Progress
@@ -133,16 +135,20 @@ var NgProgressService = (function () {
                  *  reset progress
                  *  Keep it { 0, false } to fadeOut progress-bar after complete
                  */
-                _this.progress = 0;
-                _this.updateState(_this.progress, false);
+                if (_this.progress === _this.maximum) {
+                    _this.progress = 0;
+                    _this.updateState(_this.progress, false);
+                }
             };
             var /** @type {?} */ complete = function () {
                 /**
                  * complete progressbar
                  * { 1, false } to complete progress-bar before hiding
                  */
-                _this.updateState(_this.progress, false);
-                setTimeout(hide_1, _this.speed);
+                if (_this.progress === _this.maximum) {
+                    _this.updateState(_this.progress, false);
+                    setTimeout(hide_1, _this.speed);
+                }
             };
             setTimeout(complete, this.speed);
         }
