@@ -69,25 +69,24 @@ class NgProgressService {
      */
     begin() {
         this.pendingProgress++;
-        console.log('begin pendingProgress: ', this.pendingProgress);
-        this.start();
+        if (!this.isStarted()) {
+            this.start();
+        }
+        else {
+            this.inc(-this.progress / 0.4);
+        }
     }
     /**
      * @return {?}
      */
     end() {
         this.pendingProgress--;
-        console.log('end pendingProgress: ', this.pendingProgress);
         if (this.pendingProgress <= 0) {
             this.done();
         }
-    }
-    /**
-     * @return {?}
-     */
-    reset() {
-        this.pendingProgress = 0;
-        this.done();
+        else {
+            this.inc((1 - this.progress) / 5);
+        }
     }
     /**
      * Increment Progress
@@ -137,7 +136,7 @@ class NgProgressService {
                  *  reset progress
                  *  Keep it { 0, false } to fadeOut progress-bar after complete
                  */
-                if (this.progress === this.maximum) {
+                if (this.progress >= this.maximum) {
                     this.progress = 0;
                     this.updateState(this.progress, false);
                 }
@@ -147,7 +146,7 @@ class NgProgressService {
                  * complete progressbar
                  * { 1, false } to complete progress-bar before hiding
                  */
-                if (this.progress === this.maximum) {
+                if (this.progress >= this.maximum) {
                     this.updateState(this.progress, false);
                     setTimeout(hide, this.speed);
                 }

@@ -21,7 +21,6 @@ export declare class NgProgressService {
     done(): void;
     begin(): void;
     end(): void;
-    reset(): void;
     /** Increment Progress */
     inc(amount?: any): void;
     /** Set progress state */
