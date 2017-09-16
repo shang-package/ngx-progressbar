@@ -64,21 +64,21 @@ export class NgProgressService {
 
   begin() {
     this.pendingProgress++;
-    console.log('begin pendingProgress: ', this.pendingProgress);
-    this.start();
+    if (!this.isStarted()) {
+      this.start();
+    } else {
+      this.inc(-this.progress / 0.4);
+    }
   }
 
   end() {
     this.pendingProgress--;
-    console.log('end pendingProgress: ', this.pendingProgress);
     if (this.pendingProgress <= 0) {
       this.done();
     }
-  }
-
-  reset() {
-    this.pendingProgress = 0;
-    this.done();
+    else {
+      this.inc((1 - this.progress) / 5);
+    }
   }
 
   /** Increment Progress */
